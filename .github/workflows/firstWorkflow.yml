@@ -25,6 +25,8 @@ jobs:
           # Run your Node.js script here to generate the output
           output=$(node generateOutput.js)
           echo "::set-output name=output::$output"
+          - name: Set output using new method 
+          run: echo "{name}={value}" >> $GITHUB_OUTPUT
 
   use-output:
     name: Use Generated Output
