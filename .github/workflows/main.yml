@@ -5,27 +5,20 @@ on:
     branches:
       - master1
       
-inputs:
-  script: required  # Path to the Node.js script
-  message: optional  # Optional message to include in the output
+jobs:
+  generate-and-print:  # Define the job name
+    runs-on: ubuntu-latest  # Specify the runner
 
-runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
 
-steps:
-  - uses: actions/checkout@v3
+      - name: Generate Random Numbers
+        uses: ./mediator.yml@v1  # Call mediator workflow
+        inputs:
+          script: ./generate-numbers.js  # Path to Node.js script
+          message: "Generated random numbers:"  # Optional message
 
-  - name: Run Node.js Script
-    run: |
-      npm install  # Install dependencies (if any)
-      node ${{ inputs.script }}
-
-  - name: Capture Output
-    run: |
-      numbers=$(cat output.txt)  # Assuming output is written to a file
-      echo "::set-output name=message::${{ inputs.message }}"
-      echo "::set-output name=numbers::$numbers"
-
-  - name: Print Mediator Output (Optional)
-    run: |
-      echo "Mediator Message: ${{ steps.capture_output.outputs.message }}"
-      echo "Mediator Numbers: ${{ steps.capture_output.outputs.numbers }}"
+      - name: Print Generated Numbers
+        run: |
+          echo ${{ steps.generate_numbers.outputs.message }}
+          echo ${{ steps.generate_numbers.outputs.numbers }}
