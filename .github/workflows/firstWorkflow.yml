@@ -3,7 +3,7 @@ name: Generate and Use Output
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   generate-output:
