@@ -1,0 +1,23 @@
+name: Main Workflow
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  generate-and-print:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Generate Random Numbers
+        uses: ./mediator.yml@v1  # Call mediator workflow
+        inputs:
+          script: ./generate-numbers.js  # Path to Node.js script
+          message: "Generated random numbers:"  # Optional message
+
+      - name: Print Generated Numbers
+        run: |
+          echo ${{ steps.generate_numbers.outputs.message }}
+          echo ${{ steps.generate_numbers.outputs.numbers }}
